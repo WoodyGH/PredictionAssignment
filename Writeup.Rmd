@@ -1,0 +1,74 @@
+---
+title: "Prediction Assignment"
+author: "WC"
+date: "7/28/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Summary
+### The goal of this project is to predict the manner ("classe" in the dataset) in which the 6 partcipants did the exercise using data from accelerometers on the belt, forearm, arm, and dumbell. A variety of training models are tested, including regression tree, random forest, etc. and their prediction accuracy was evaluated. 
+
+## Step 1: Data download and preparation
+### Download from given urls and select classe as response variable and accelerometer data from belt, forearm, arm, and budbell as predictor variables. Then, split the data into training (75%) and testing (25%).
+
+```{r data}
+#libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(caret)
+library(rattle)
+
+#data download
+org_train_data <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv")
+org_test_data <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv")
+
+#select accelerometer data only.
+train_data <- org_train_data %>% select(starts_with("accel_"))
+train_data$classe <- org_train_data$classe
+test_data <- org_test_data %>% select(starts_with("accel_"))
+
+#split train_data into training and testing
+inTrain <- createDataPartition(y=train_data$classe, p=3/4, list=FALSE)
+training <- train_data[inTrain,]
+testing <- train_data[-inTrain,]
+```
+
+## Step 2: Model building
+### Build tree regression, random forest, boosting, and linear model-based prediction models.
+
+```{r analysis, cache=TRUE}
+
+#Predicting with trees
+tree_mod <- train(classe ~., method="rpart", data=training)
+print(tree_mod$finalModel)
+fancyRpartPlot(tree_mod$finalModel)
+tree_pred <- predict(tree_mod, testing)
+table(tree_pred)
+tree_acc <- confusionMatrix(tree_pred, as.factor(testing$classe))$overall[1]
+
+#Random Forests
+rf_mod <- train(classe ~., method="rf", data=training)
+print(rf_mod)
+rf_pred <- predict(rf_mod, testing)
+table(rf_pred)
+rf_acc <- confusionMatrix(rf_pred, as.factor(testing$classe))$overall[1]
+
+#Boosting
+gbm_mod <- train(classe ~., method="gbm", data=training, verbose=FALSE)
+print(rf_mod)
+gbm_pred <- predict(gbm_mod, testing)
+table(gbm_pred)
+gbm_acc <- confusionMatrix(gbm_pred, as.factor(testing$classe))$overall[1]
+
+#Model based prediction
+lda_mod <- train(classe ~., method="lda", data=training)
+lda_pred <- predict(lda_mod, testing)
+table(lda_pred)
+lda_acc <- confusionMatrix(lda_pred, as.factor(testing$classe))$overall[1]
+```
+
