@@ -31,6 +31,7 @@ org_train_data <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/
 org_test_data <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv")
 
 #select accelerometer data only.
+set.seed (1234)
 train_data <- org_train_data %>% select(starts_with("accel_"))
 train_data$classe <- org_train_data$classe
 test_data <- org_test_data %>% select(starts_with("accel_"))
@@ -42,25 +43,26 @@ testing <- train_data[-inTrain,]
 ```
 
 ## Step 2: Model building
-### Build tree regression, random forest, boosting, and linear model-based prediction models.
+### Build regression tree, random forest, boosting, and linear model-based prediction models with 5-fold cross validation. 
 
 ```{r analysis, cache=TRUE}
 
 #Predicting with trees
-tree_mod <- train(classe ~., method="rpart", data=training)
+tree_mod <- train(classe ~., method="rpart", trControl=trainControl(method="cv", number=5), data=training)
 print(tree_mod)
 fancyRpartPlot(tree_mod$finalModel)
 
+
 #Random Forests
-rf_mod <- train(classe ~., method="rf", data=training)
+rf_mod <- train(classe ~., method="rf", trControl=trainControl(method="cv", number=5), data=training)
 print(rf_mod)
 
 #Boosting
-gbm_mod <- train(classe ~., method="gbm", data=training, verbose=FALSE)
-print(rf_mod)
+gbm_mod <- train(classe ~., method="gbm", trControl=trainControl(method="cv", number=5), data=training, verbose=FALSE)
+print(gbm_mod)
 
 #Linear discriminant analysis
-lda_mod <- train(classe ~., method="lda", data=training)
+lda_mod <- train(classe ~., method="lda", trControl=trainControl(method="cv", number=5), data=training)
 print(lda_mod)
 
 ```
@@ -107,6 +109,6 @@ print(new_pred)
 ```
 
 ## Conclusion
-### Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.945350 and the lowest out of sample error of 0.054649.  Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.
+### Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.9490212 and the lowest out of sample error of 0.05097879.  Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.
 
 
