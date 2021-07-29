@@ -107,6 +107,6 @@ print(new_pred)
 ```
 
 ## Conclusion
-Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.945350 and the lowest out of sample error of 0.054649.  Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.
+### Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.945350 and the lowest out of sample error of 0.054649.  Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.
 
 

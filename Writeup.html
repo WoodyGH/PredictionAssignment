@@ -499,45 +499,45 @@ tree_pred &lt;- predict(tree_mod, testing)
 table(tree_pred)</code></pre>
 <pre><code>## tree_pred
 ##    A    B    C    D    E 
-## 2843  331    0 1481  249</code></pre>
+## 2820  301    0 1523  260</code></pre>
 <pre class="r"><code>tree_acc &lt;- confusionMatrix(tree_pred, as.factor(testing$classe))$overall[1]
 print(paste(&quot;Regression Trees Accuracy:&quot;, tree_acc*100))</code></pre>
-<pre><code>## [1] &quot;Regression Trees Accuracy: 42.0269168026101&quot;</code></pre>
+<pre><code>## [1] &quot;Regression Trees Accuracy: 41.4967373572594&quot;</code></pre>
 <pre class="r"><code>print(paste(&quot;Regression Trees Out of Sample Error:&quot;, (1-tree_acc)*100))</code></pre>
-<pre><code>## [1] &quot;Regression Trees Out of Sample Error: 57.9730831973899&quot;</code></pre>
+<pre><code>## [1] &quot;Regression Trees Out of Sample Error: 58.5032626427406&quot;</code></pre>
 <pre class="r"><code>#random forest
 rf_pred &lt;- predict(rf_mod, testing)
 table(rf_pred)</code></pre>
 <pre><code>## rf_pred
 ##    A    B    C    D    E 
-## 1400  939  878  792  895</code></pre>
+## 1397  942  874  792  899</code></pre>
 <pre class="r"><code>rf_acc &lt;- confusionMatrix(rf_pred, as.factor(testing$classe))$overall[1]
 print(paste(&quot;Random Forest Accuracy:&quot;, rf_acc*100))</code></pre>
-<pre><code>## [1] &quot;Random Forest Accuracy: 98.4706362153344&quot;</code></pre>
+<pre><code>## [1] &quot;Random Forest Accuracy: 98.8784665579119&quot;</code></pre>
 <pre class="r"><code>print(paste(&quot;Random Forest Out of Sample Error:&quot;, (1-rf_acc)*100))</code></pre>
-<pre><code>## [1] &quot;Random Forest Out of Sample Error: 1.52936378466558&quot;</code></pre>
+<pre><code>## [1] &quot;Random Forest Out of Sample Error: 1.1215334420881&quot;</code></pre>
 <pre class="r"><code>#boosting
 gbm_pred &lt;- predict(gbm_mod, testing)
 table(gbm_pred)</code></pre>
 <pre><code>## gbm_pred
 ##    A    B    C    D    E 
-## 1493  842  974  791  804</code></pre>
+## 1499  854  967  786  798</code></pre>
 <pre class="r"><code>gbm_acc &lt;- confusionMatrix(gbm_pred, as.factor(testing$classe))$overall[1]
 print(paste(&quot;Boosting with Trees Accuracy:&quot;, gbm_acc*100))</code></pre>
-<pre><code>## [1] &quot;Boosting with Trees Accuracy: 83.4013050570963&quot;</code></pre>
+<pre><code>## [1] &quot;Boosting with Trees Accuracy: 84.1150081566068&quot;</code></pre>
 <pre class="r"><code>print(paste(&quot;Boosting with Trees Out of Sample Error:&quot;, (1-gbm_acc)*100))</code></pre>
-<pre><code>## [1] &quot;Boosting with Trees Out of Sample Error: 16.5986949429037&quot;</code></pre>
+<pre><code>## [1] &quot;Boosting with Trees Out of Sample Error: 15.8849918433931&quot;</code></pre>
 <pre class="r"><code>#linear discriminant analysis
 lda_pred &lt;- predict(lda_mod, testing)
 table(lda_pred)</code></pre>
 <pre><code>## lda_pred
 ##    A    B    C    D    E 
-## 1890  892  605  986  531</code></pre>
+## 1872  888  623  983  538</code></pre>
 <pre class="r"><code>lda_acc &lt;- confusionMatrix(lda_pred, as.factor(testing$classe))$overall[1]
 print(paste(&quot;Linear Discriminant Analysis Accuracy:&quot;, lda_acc*100))</code></pre>
-<pre><code>## [1] &quot;Linear Discriminant Analysis Accuracy: 50.2243066884176&quot;</code></pre>
+<pre><code>## [1] &quot;Linear Discriminant Analysis Accuracy: 51.2234910277325&quot;</code></pre>
 <pre class="r"><code>print(paste(&quot;Linear Discriminant Analysis Out of Sample Error:&quot;, (1-lda_acc)*100))</code></pre>
-<pre><code>## [1] &quot;Linear Discriminant Analysis Out of Sample Error: 49.7756933115824&quot;</code></pre>
+<pre><code>## [1] &quot;Linear Discriminant Analysis Out of Sample Error: 48.7765089722675&quot;</code></pre>
 </div>
 </div>
 <div id="step-4-application" class="section level2">
@@ -552,7 +552,9 @@ print(new_pred)</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.945350 and the lowest out of sample error of 0.054649. Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.</p>
+<div id="among-the-four-models-tested-the-random-forest-model-was-selected-as-the-best-model-with-the-highest-accuracy-of-0.945350-and-the-lowest-out-of-sample-error-of-0.054649.-therefore-the-random-forest-model-was-applied-to-the-new-test-dataset-with-20-cases-resuting-in-outcomes-of-7-as-6-bs-2-cs-2-ds-and-3-es." class="section level3">
+<h3>Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.945350 and the lowest out of sample error of 0.054649. Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.</h3>
+</div>
 </div>
 
 
