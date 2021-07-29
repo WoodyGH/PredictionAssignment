@@ -2,7 +2,10 @@
 title: "Prediction Assignment"
 author: "WC"
 date: "7/28/2021"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
+  keep_md: true
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Summary
-### The goal of this project is to predict the manner ("classe" in the dataset) in which the 6 partcipants did the exercise, using data from accelerometers on the belt, forearm, arm, and dumbell. A variety of training models are tested, including regression trees, random forest, boosting with trees and linear model-based prediction models. Among those tested, the random forest model showed the best accuracy, and thus applied to the test data for classificaton. 
+### The goal of this project is to predict the manner ("classe" in the dataset) in which the 6 partcipants did the exercise, using data from accelerometers on the belt, forearm, arm, and dumbell. A variety of training models are tested, including regression trees, random forest, boosting with trees and linear discriminant analysis models. Among those tested, the random forest model showed the best accuracy, and thus applied to the test data for classificaton. 
 
 ## Step 1: Data download and preparation
 ### Download from given urls and select 'classe' as response variable, and accelerometer data from belt, forearm, arm and budbell as predictor variables. Then, split the data into training (75%) and testing (25%).
@@ -56,7 +59,7 @@ print(rf_mod)
 gbm_mod <- train(classe ~., method="gbm", data=training, verbose=FALSE)
 print(rf_mod)
 
-#Model based prediction
+#Linear discriminant analysis
 lda_mod <- train(classe ~., method="lda", data=training)
 print(lda_mod)
 
@@ -64,30 +67,35 @@ print(lda_mod)
 
 ## Step 3: Prediction and Accuracy comparison
 ### Estimate accuracy of each prediction model against testing data and choose the best model.
+### Estimate out of sample error for individual models
 ``` {r prediction & accuracy}
 #regression trees
 tree_pred <- predict(tree_mod, testing)
 table(tree_pred)
 tree_acc <- confusionMatrix(tree_pred, as.factor(testing$classe))$overall[1]
-print(paste("Regression Trees Accuracy:", tree_acc))
+print(paste("Regression Trees Accuracy:", tree_acc*100))
+print(paste("Regression Trees Out of Sample Error:", (1-tree_acc)*100))
 
 #random forest
 rf_pred <- predict(rf_mod, testing)
 table(rf_pred)
 rf_acc <- confusionMatrix(rf_pred, as.factor(testing$classe))$overall[1]
-print(paste("Random Forest Accuracy:", rf_acc))
+print(paste("Random Forest Accuracy:", rf_acc*100))
+print(paste("Random Forest Out of Sample Error:", (1-rf_acc)*100))
       
 #boosting
 gbm_pred <- predict(gbm_mod, testing)
 table(gbm_pred)
 gbm_acc <- confusionMatrix(gbm_pred, as.factor(testing$classe))$overall[1]
-print(paste("Boosting with Trees Accuracy:", gbm_acc))
+print(paste("Boosting with Trees Accuracy:", gbm_acc*100))
+print(paste("Boosting with Trees Out of Sample Error:", (1-gbm_acc)*100))
 
-#model-based
+#linear discriminant analysis
 lda_pred <- predict(lda_mod, testing)
 table(lda_pred)
 lda_acc <- confusionMatrix(lda_pred, as.factor(testing$classe))$overall[1]
-print(paste("Linear Model Based Model Accuracy:", lda_acc))
+print(paste("Linear Discriminant Analysis Accuracy:", lda_acc*100))
+print(paste("Linear Discriminant Analysis Out of Sample Error:", (1-lda_acc)*100))
 
 ```
 
@@ -99,6 +107,6 @@ print(new_pred)
 ```
 
 ## Conclusion
-Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.985522.  Therefore the Random Forest model was applied to the new test dataset with 20 samples, resuting 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.
+Among the four models tested, the Random Forest model was selected as the best model with the highest accuracy of 0.945350 and the lowest out of sample error of 0.054649.  Therefore the Random Forest model was applied to the new test dataset with 20 cases, resuting in outcomes of 7 As, 6 Bs, 2 Cs, 2 Ds, and 3 Es.
 
 
